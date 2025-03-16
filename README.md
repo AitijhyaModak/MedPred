@@ -4,7 +4,7 @@
 - In vscode terminal do `cd backend`
 - Then craete a virtual environment `python -m venv venv`
 - Activate the virtual environment for the workspace `venv\Scripts\activate`
-- Install all the dependencies `pip install requirements.txt`
+- Install all the dependencies `pip install -r requirements.txt`
 - Run the application `python run.py`
 
   The backend server will run on port 5000 by default.
