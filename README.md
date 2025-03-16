@@ -10,3 +10,14 @@
   The backend server will run on port 5000 by default.
 
   Use *http://localhost:5000* as the base url for routing.
+
+
+
+## How to run frontend ?
+- Clone the repository.
+- In vscode terminal do `cd frontend`
+- Run `npm i`
+- Run `npm run dev`
+- The app runs at *http://localhost:5173* by default.
+
+ Make sure the backend is also running at port 5000 for disease prediction to work.
