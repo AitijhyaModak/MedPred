@@ -10,14 +10,15 @@ def home():
 
 
 
-@main_blueprint.route("/predict")
+@main_blueprint.route("/predict", methods=["POST"])
 def disease_prediction():
-    # data = request.json
-    # user_symptoms = data.get("symptoms",[])
-    # user_text = data.get("disease_description", "")
+    data = request.json
+    user_symptoms = data.get("user_symptoms",[])
+    user_text = data.get("user_text", "")
+    print(data)
 
-    user_text = "today i am having a bit of chest pain, i am also feeling tired and hungry"
-    user_symptoms = ["anger", "thirsty", "hip pain", "acne"]
+    # user_text = "today i am having a bit of chest pain, i am also feeling tired and hungry"
+    # user_symptoms = ["anger", "thirsty", "hip pain", "acne"]
 
     disease = predict.make_prediction(user_text, user_symptoms)
 
