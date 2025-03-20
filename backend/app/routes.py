@@ -1,6 +1,8 @@
 from flask import Blueprint, request, jsonify #type: ignore
 import pickle
 from prediction import predict
+import warnings
+warnings.simplefilter('ignore')
 
 main_blueprint = Blueprint("main", __name__)
 
@@ -13,12 +15,13 @@ def home():
 @main_blueprint.route("/predict", methods=["POST"])
 def disease_prediction():
     data = request.json
-    user_symptoms = data.get("user_symptoms",[])
-    user_text = data.get("user_text", "")
+    user_symptoms = data.get("symptoms",[])
+    user_text = data.get("problemDescription", "")
+    
+    user_text += ", "
+    for i in user_symptoms:
+        user_text += i + ", "
     print(data)
-
-    # user_text = "today i am having a bit of chest pain, i am also feeling tired and hungry"
-    # user_symptoms = ["anger", "thirsty", "hip pain", "acne"]
 
     disease = predict.make_prediction(user_text, user_symptoms)
 

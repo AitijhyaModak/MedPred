@@ -67,7 +67,7 @@ function Form() {
       className="bg-card rounded-xl pt-4 pb-4 w-[50%] mx-4 mt-8"
       onSubmit={onFormSubmit}
     >
-      <h1 className="text-3xl text-red-200 mb-5 mx-6 pb-5 border-amber-800">
+      <h1 className="text-3xl text-green-100 mb-5 mx-6 pb-5 border-amber-800">
         Enter your details
       </h1>
 
