@@ -18,10 +18,9 @@ def disease_prediction():
     user_symptoms = data.get("symptoms",[])
     user_text = data.get("problemDescription", "")
     
-    user_text += ", "
-    for i in user_symptoms:
-        user_text += i + ", "
     print(data)
+    print("\Final Description: ")
+    print(user_text)
 
     disease = predict.make_prediction(user_text, user_symptoms)
 
