@@ -1,10 +1,20 @@
 import axios from "axios"
 
-export const predict = async (user_text, user_symptoms) => {
+export const predict = async (userDetails) => {
     let response;
     try {
         response = await axios.post("http://localhost:5000/predict", {
-            user_text, user_symptoms
+           symptoms: userDetails.symptoms,
+           problemDescription: userDetails.problemDescription,
+           age:userDetails.age,
+           height:userDetails.height,
+           weight:userDetails.weight,
+           dailyCaloricIntake:userDetails.dailyCaloricIntake,
+           bloodPressure:userDetails.bloodPressure,
+           cholesterol:userDetails.cholesterol,
+           physicalActivity:userDetails.physicalActivity,
+           gender:userDetails.gender,
+           cuisine:userDetails.cuisine,
         })
     }
     catch (error) {

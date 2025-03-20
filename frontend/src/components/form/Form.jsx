@@ -12,51 +12,55 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
+const defaultUserDetails = {
+  age: "",
+  height: "",
+  weight: "",
+  dailyCaloricIntake: 1600,
+  bloodPressure: 120,
+  cholesterol: 180,
+  physicalActivity: "moderate",
+  gender: "male",
+  cuisine: "indian",
+  bmi: "",
+  problemDescription: "",
+  symptoms: [],
+};
+
 function Form() {
-  const [description, setDescription] = useState("");
-  const [symptoms, setSymptoms] = useState([]);
-  const [symptomFormOpen, setSymptomFormOpen] = useState(false);
   const [enteredSymptom, setEnteredSymptom] = useState("");
-  const symptomInputRef = useRef(null);
-  const [loading, setLoading] = useState(false);
-  const [predictionResults, setPredictionResults] = useState({});
+  const [userDetails, setUserDetails] = useState(defaultUserDetails);
 
   const onAddClick = (e) => {
-    setSymptomFormOpen(false);
     if (enteredSymptom.trim() !== "")
-      setSymptoms([...symptoms, enteredSymptom]);
+      setUserDetails({
+        ...userDetails,
+        symptoms: [
+          ...userDetails.symptoms,
+          enteredSymptom.toLowerCase().trim(),
+        ],
+      });
     setEnteredSymptom("");
-  };
-
-  const onAddSymptomClick = (e) => {
-    setSymptomFormOpen(true);
   };
 
   const onFormSubmit = async (e) => {
     e.preventDefault();
     let response;
-
-    setLoading(true);
+    //add validation
+    // setLoading(true);
     try {
-      response = await predict(description, symptoms);
+      response = await predict(userDetails);
     } catch (error) {
       console.error("error in app.jsx from predict api");
     }
-    setLoading(false);
+    // setLoading(false);
     console.log(response);
-    setPredictionResults(response.data);
   };
-
-  useEffect(() => {
-    if (symptomFormOpen) symptomInputRef.current?.focus();
-  }, [symptomFormOpen]);
 
   return (
     <form
@@ -77,6 +81,10 @@ function Form() {
               placeholder="Age"
               min="5"
               max="100"
+              value={userDetails.age}
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, age: Number(e.target.value) })
+              }
             ></Input>
           </div>
 
@@ -88,6 +96,13 @@ function Form() {
               placeholder="Height (cm)"
               min="50"
               max="300"
+              value={userDetails.height}
+              onChange={(e) =>
+                setUserDetails({
+                  ...userDetails,
+                  height: Number(e.target.value),
+                })
+              }
             ></Input>
           </div>
           <div className="flex flex-col gap-2 w-full">
@@ -98,6 +113,13 @@ function Form() {
               placeholder="Weight (kg)"
               min="10"
               max="150"
+              value={userDetails.weight}
+              onChange={(e) =>
+                setUserDetails({
+                  ...userDetails,
+                  weight: Number(e.target.value),
+                })
+              }
             ></Input>
           </div>
         </div>
@@ -113,7 +135,13 @@ function Form() {
               placeholder="Caloric Intake (kcal)"
               min="300"
               max="11000"
-              defaultValue="1600"
+              value={userDetails.dailyCaloricIntake}
+              onChange={(e) =>
+                setUserDetails({
+                  ...userDetails,
+                  dailyCaloricIntake: Number(e.target.value),
+                })
+              }
             ></Input>
           </div>
           <div className="flex flex-col gap-2 w-full">
@@ -126,7 +154,13 @@ function Form() {
               min="20"
               max="300"
               placeholder="Blood Pressure (mmHg)"
-              defaultValue="120"
+              value={userDetails.bloodPressure}
+              onChange={(e) =>
+                setUserDetails({
+                  ...userDetails,
+                  bloodPressure: Number(e.target.value),
+                })
+              }
             ></Input>
           </div>
           <div className="flex flex-col gap-2 w-full">
@@ -139,7 +173,13 @@ function Form() {
               placeholder="Cholesterol (mg/dL)"
               min="20"
               max="500"
-              defaultValue="180"
+              value={userDetails.cholesterol}
+              onChange={(e) =>
+                setUserDetails({
+                  ...userDetails,
+                  cholesterol: Number(e.target.value),
+                })
+              }
             ></Input>
           </div>
         </div>
@@ -149,43 +189,64 @@ function Form() {
             <span className="text-red-100 text-sm ml-[1px]">
               Physical Activity
             </span>
-            <Select className="cursor-pointer" defaultValue="Moderate">
+            <Select
+              className="cursor-pointer"
+              value={userDetails.physicalActivity}
+              onChange={(e) =>
+                setUserDetails({
+                  ...userDetails,
+                  physicalActivity: e.target.value,
+                })
+              }
+            >
               <SelectTrigger className="w-full text-red-100 rounded-lg border-primary">
                 <SelectValue placeholder="Gender" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Sedentary">Sedentary</SelectItem>
-                <SelectItem value="Moderate">Moderate</SelectItem>
-                <SelectItem value="Active">Active</SelectItem>
+                <SelectItem value="sedentary">Sedentary</SelectItem>
+                <SelectItem value="moderate">Moderate</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex flex-col gap-2 w-full">
             <span className="text-red-100 text-sm ml-[1px]">Gender</span>
-            <Select className="cursor-pointer" defaultValue="Male">
+            <Select
+              className="cursor-pointer"
+              value={userDetails.gender}
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, gender: e.target.value })
+              }
+            >
               <SelectTrigger className="w-full text-red-100 rounded-lg border-primary">
                 <SelectValue placeholder="Gender" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Male">Male</SelectItem>
-                <SelectItem value="Female">Female</SelectItem>
-                <SelectItem value="Other">Other</SelectItem>
+                <SelectItem value="male">Male</SelectItem>
+                <SelectItem value="female">Female</SelectItem>
+                <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <div className="flex flex-col gap-2 w-full">
             <span className="text-red-100 text-sm ml-[1px]">Cuisine</span>
-            <Select className="cursor-pointer" defaultValue="Indian">
+            <Select
+              className="cursor-pointer"
+              value={userDetails.cuisine}
+              onChange={(e) =>
+                setUserDetails({ ...userDetails, cuisine: e.target.value })
+              }
+            >
               <SelectTrigger className="w-full text-red-100 rounded-lg border-primary">
                 <SelectValue placeholder="Cuisine" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="Indian">Indian</SelectItem>
-                <SelectItem value="Italian">Italian</SelectItem>
-                <SelectItem value="Chinese">Chinese</SelectItem>
-                <SelectItem value="Mexican">Mexican</SelectItem>
+                <SelectItem value="indian">Indian</SelectItem>
+                <SelectItem value="italian">Italian</SelectItem>
+                <SelectItem value="chinese">Chinese</SelectItem>
+                <SelectItem value="mexican">Mexican</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -197,19 +258,24 @@ function Form() {
           </span>
           <Textarea
             placeholder="Start writing or speaking..."
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            value={userDetails.problemDescription}
+            onChange={(e) =>
+              setUserDetails({
+                ...userDetails,
+                problemDescription: e.target.value,
+              })
+            }
             className="border-primary h-24 focus-visible:ring-primary text-red-100 text-base"
           ></Textarea>
         </div>
 
-        {symptoms.length !== 0 && (
+        {userDetails.symptoms.length !== 0 && (
           <div className="flex gap-5 flex-wrap">
-            {symptoms.map((symptom) => (
+            {userDetails.symptoms.map((symptom) => (
               <SymptomTag
                 symptom={symptom}
-                symptoms={symptoms}
-                setSymptoms={setSymptoms}
+                userDetails={userDetails}
+                setUserDetails={setUserDetails}
               ></SymptomTag>
             ))}
           </div>
@@ -250,7 +316,7 @@ function Form() {
             </DialogContent>
           </Dialog>
           <button className="bg-primary mb-3 cursor-pointer h-10 w-fit px-5 rounded-lg hover:opacity-90 hover:scale-[1.05] transition-all duration-150">
-            Predict
+            Generate Report
           </button>
         </div>
       </div>
@@ -260,16 +326,19 @@ function Form() {
 
 export default Form;
 
-function SymptomTag({ symptom, symptoms, setSymptoms }) {
+function SymptomTag({ symptom, userDetails, setUserDetails }) {
   const onCrossClick = () => {
-    const symptomsAfterDeletion = symptoms.filter((symp) => symp !== symptom);
-    setSymptoms(symptomsAfterDeletion);
+    const symptomsAfterDeletion = userDetails.symptoms.filter(
+      (symp) => symp !== symptom
+    );
+    setUserDetails({ ...userDetails, symptoms: symptomsAfterDeletion });
   };
 
   return (
     <div className="items-center flex text-red-200 px-4 border-2 rounded-xl py-1 border-primary gap-5 w-fit">
       <span className="">{symptom}</span>
       <button
+        type="button"
         onClick={onCrossClick}
         className="cursor-pointer text-xl text-primary font-semibold"
       >
