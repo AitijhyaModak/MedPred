@@ -22,7 +22,9 @@ def disease_prediction():
     print("\Final Description: ")
     print(user_text)
 
-    disease = predict.make_prediction(user_text, user_symptoms)
+    returnArray = predict.make_prediction(user_text, user_symptoms)
+    disease = returnArray[0].lower()
+    diet = returnArray[1]
 
     with open("./model/disease_description.pkl", "rb") as f:
         disease_description_map = pickle.load(f)
@@ -36,10 +38,10 @@ def disease_prediction():
     with open("./model/workout.pkl", "rb") as f:
         workout_map = pickle.load(f)
 
-    description = disease_description_map[disease]
-    medication = medication_map[disease]
-    precautions = precautions_map[disease]
-    workout = workout_map[disease]
+    # description = disease_description_map[disease]
+    # medication = medication_map[disease]
+    # precautions = precautions_map[disease]
+    # workout = workout_map[disease]
     
 
-    return jsonify({"disease":disease, "description":description, "medication": medication, "precautions":precautions,"workout":workout})
+    return jsonify({"disease":disease,"diet": diet})

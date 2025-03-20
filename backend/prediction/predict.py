@@ -53,5 +53,16 @@ def make_prediction(user_text, user_symptoms):
 
     with open("./model/mapping.pkl", "rb") as f:
         mapping = pickle.load(f)
+
+    vec2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    vec2 = np.array(vec2).reshape(1, -1)
+
+    with open("./model/diet_model.pkl", "rb") as f:
+        sclf2 = pickle.load(f)
+        
+    b = sclf2.predict(vec2)
+    b = b[0]
+    mapping2 = {0: 'Low_Carb', 1: 'Low_Sodium', 2: 'Balanced'}
+    print(mapping2[b])
     
-    return mapping[a]
+    return [mapping[a], mapping2[b]]
