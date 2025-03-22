@@ -1,10 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Route } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import "./index.css";
 import App from "./App";
 import About from "./About";
+import Home from "./Home";
 import Report from "./components/report/Report.jsx";
+
 const example_data = {
   age: "26",
   height: "180 cm",
@@ -57,14 +59,19 @@ const example_data = {
     "Quinoa khichdi made with yellow lentils, diced zucchini, and tomatoes, flavored with ginger, black pepper, and a dash of lemon juice, served with cucumber raita made from unsalted curd and fresh coriander.",
   ],
 };
+
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App></App>,
+    element: <App />,
   },
   {
     path: "about",
-    element: <About></About>,
+    element: <About />,
+  },
+  {
+    path: "home",
+    element: <Home />,
   },
   {
     path: "report",

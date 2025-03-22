@@ -51,7 +51,13 @@ function Form() {
   const onFormSubmit = async (e) => {
     e.preventDefault();
     let response;
-    //add validation
+
+    //add validatoin
+    const heightSquare = (userDetails.height / 100) ^ 2;
+    const calculatedBmi = userDetails.weight / heightSquare;
+    setUserDetails({ ...userDetails, bmi: calculatedBmi });
+    console.log(userDetails);
+
     // setLoading(true);
     try {
       response = await predict(userDetails);

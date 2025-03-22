@@ -15,6 +15,7 @@ export const predict = async (userDetails) => {
            physicalActivity:userDetails.physicalActivity,
            gender:userDetails.gender,
            cuisine:userDetails.cuisine,
+           bmi: userDetails.bmi,
         })
     }
     catch (error) {
