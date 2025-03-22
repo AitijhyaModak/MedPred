@@ -45,7 +45,7 @@ def disease_prediction():
     return jsonify({
         "age":data.get("age"),
         "height":data.get("height"),
-        "caloric_intake": data.get("caloricIntake"),
+        "caloric_intake": data.get("dailyCaloricIntake"),
         "blood_pressure": data.get("bloodPressure"),
         "cholesterol": data.get("cholesterol"),
         "gender": data.get("gender"),
