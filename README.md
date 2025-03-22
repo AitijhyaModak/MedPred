@@ -18,6 +18,6 @@
 - In vscode terminal do `cd frontend`
 - Run `npm i`
 - Run `npm run dev`
-- The app runs at *http://localhost:5173* by default.
+- The app runs at *http://localhost:5173/predict*.
 
  Make sure the backend is also running at port 5000 for disease prediction to work.
