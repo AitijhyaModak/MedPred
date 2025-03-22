@@ -20,12 +20,10 @@ const Report = ({ data }) => {
         className="bg-white p-8 rounded-lg shadow-xl w-full max-w-3xl border border-gray-300"
         id="report"
       >
-        
         <div className="text-center py-4 mb-4 border-b-2 border-gray-300">
           <h1 className="text-4xl font-bold text-blue-600">MedPred Report</h1>
         </div>
 
-        
         <div className="bg-blue-50 p-4 rounded-lg mb-4 border border-blue-300">
           <h2 className="text-2xl font-semibold text-blue-700 mb-2">
             Personal Information
@@ -52,7 +50,6 @@ const Report = ({ data }) => {
           </div>
         </div>
 
-        
         <div className="bg-red-50 p-4 rounded-lg mb-4 border border-red-300">
           <h2 className="text-2xl font-semibold text-red-700 mb-2">
             Diagnosis
@@ -63,7 +60,6 @@ const Report = ({ data }) => {
           <p className="text-gray-700">{data.description}</p>
         </div>
 
-       
         <div className="bg-yellow-50 p-4 rounded-lg mb-4 border border-yellow-300">
           <h2 className="text-2xl font-semibold text-yellow-700">
             Things to Avoid
@@ -75,7 +71,6 @@ const Report = ({ data }) => {
           </ul>
         </div>
 
-       
         <div className="bg-green-50 p-4 rounded-lg mb-4 border border-green-300">
           <h2 className="text-2xl font-semibold text-green-700">
             Things to Do Now
@@ -87,7 +82,6 @@ const Report = ({ data }) => {
           </ul>
         </div>
 
-        
         <div className="bg-purple-50 p-4 rounded-lg mb-4 border border-purple-300">
           <h2 className="text-2xl font-semibold text-purple-700">
             Workout Plan
@@ -99,7 +93,6 @@ const Report = ({ data }) => {
           </ul>
         </div>
 
-        
         <div className="bg-indigo-50 p-4 rounded-lg mb-4 border border-indigo-300">
           <h2 className="text-2xl font-semibold text-indigo-700">
             Recommended Diet
