@@ -16,6 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { FaMicrophone } from "react-icons/fa";
 
 const defaultUserDetails = {
   age: "",
@@ -262,17 +263,20 @@ function Form() {
           <span className="text-red-100 text-sm ml-[1px]">
             Describe your problem
           </span>
-          <Textarea
-            placeholder="Start writing or speaking..."
-            value={userDetails.problemDescription}
-            onChange={(e) =>
-              setUserDetails({
-                ...userDetails,
-                problemDescription: e.target.value,
-              })
-            }
-            className="border-primary h-24 focus-visible:ring-primary text-red-100 text-base"
-          ></Textarea>
+          <div className="flex items-center gap-5">
+            <Textarea
+              placeholder="Start writing or speaking..."
+              value={userDetails.problemDescription}
+              onChange={(e) =>
+                setUserDetails({
+                  ...userDetails,
+                  problemDescription: e.target.value,
+                })
+              }
+              className="border-primary h-24 focus-visible:ring-primary text-red-100 text-base"
+            ></Textarea>
+            <FaMicrophone className="fill-primary size-6 cursor-pointer"></FaMicrophone>
+          </div>
         </div>
 
         {userDetails.symptoms.length !== 0 && (
