@@ -2,7 +2,7 @@ import { NavLink } from "react-router";
 
 function Header() {
   return (
-    <nav className="border-2 bg-card h-16 flex justify-between p-4 mx-4 rounded-xl">
+    <nav className="h-16 flex justify-between p-4">
       <NavLink to="/">MedPred</NavLink>
       <div className="flex gap-3">
         <NavLink

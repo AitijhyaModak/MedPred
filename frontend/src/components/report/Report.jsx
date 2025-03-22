@@ -1,25 +1,43 @@
 import React from "react";
-import html2canvas from "html2canvas";
+import html2canvas from "html2canvas-pro";
+import { jsPDF } from "jspdf";
 
 const Report = ({ data }) => {
   const downloadImage = () => {
     const reportElement = document.getElementById("report");
 
-    html2canvas(reportElement, { scale: 2 }).then((canvas) => {
-      const image = canvas.toDataURL("image/png");
-      const link = document.createElement("a");
-      link.href = image;
-      link.download = "MedPred_Report.png";
-      link.click();
-    });
+    setTimeout(() => {
+      html2canvas(reportElement, {
+        scale: 2,
+        backgroundColor: "white",
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        const pdf = new jsPDF("p", "mm", "a4");
+
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= 297;
+
+        while (heightLeft > 0) {
+          position -= 297;
+          pdf.addPage();
+          pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+          heightLeft -= 297;
+        }
+
+        pdf.save("MedPred_Report.pdf");
+      });
+    }, 500);
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-6">
-      <div
-        className="bg-white p-8 rounded-lg shadow-xl w-full max-w-3xl border border-gray-300"
-        id="report"
-      >
+    <div className="px-5 rounded-xl bg-white/15 shadow-2xl backdrop-blur-2xl shadow-gray-400 max-w-[850px] mx-auto mt-13 mb-20 border-red-400">
+      <div id="report" className="px-3">
         <div className="text-center py-4 mb-4 border-b-2 border-gray-300">
           <h1 className="text-4xl font-bold text-blue-600">MedPred Report</h1>
         </div>
@@ -33,19 +51,19 @@ const Report = ({ data }) => {
               <strong>Age:</strong> {data.age}
             </p>
             <p>
-              <strong>Height:</strong> {data.height}
+              <strong>Height:</strong> {data.height} cm
             </p>
             <p>
-              <strong>Weight:</strong> {data.weight}
+              <strong>Weight:</strong> {data.weight} kg
             </p>
             <p>
               <strong>BMI:</strong> {data.bmi}
             </p>
             <p>
-              <strong>Blood Pressure:</strong> {data.blood_pressure}
+              <strong>Blood Pressure:</strong> {data.blood_pressure} mmHg
             </p>
             <p>
-              <strong>Cholesterol:</strong> {data.cholesterol}
+              <strong>Cholesterol:</strong> {data.cholesterol} mg/dL
             </p>
           </div>
         </div>
@@ -97,25 +115,28 @@ const Report = ({ data }) => {
           <h2 className="text-2xl font-semibold text-indigo-700">
             Recommended Diet
           </h2>
-          <p className="text-gray-700 font-medium">Cuisine: {data.cuisine}</p>
+          <p className="text-gray-700 font-medium capitalize">
+            Cuisine: {data.cuisine}
+          </p>
           <div className="mt-2">
             <h3 className="font-semibold text-lg">Breakfast</h3>
-            <p className="text-gray-600">{data.diet[0]}</p>
+            <p className="text-gray-600">{data.diets[0]}</p>
           </div>
           <div className="mt-2">
             <h3 className="font-semibold text-lg">Lunch</h3>
-            <p className="text-gray-600">{data.diet[1]}</p>
+            <p className="text-gray-600">{data.diets[1]}</p>
           </div>
           <div className="mt-2">
             <h3 className="font-semibold text-lg">Dinner</h3>
-            <p className="text-gray-600">{data.diet[2]}</p>
+            <p className="text-gray-600">{data.diets[2]}</p>
           </div>
         </div>
       </div>
+
       <div className="text-center mt-6">
         <button
           onClick={downloadImage}
-          className="px-6 py-3 text-white font-semibold rounded-lg shadow bg-blue-600 hover:bg-blue-700 transition duration-200"
+          className="px-6 mb-3 py-3 cursor-pointer text-white font-semibold rounded-lg shadow bg-blue-600 hover:bg-blue-700 transition duration-200"
         >
           Save as Image
         </button>

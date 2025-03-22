@@ -28,12 +28,11 @@ const defaultUserDetails = {
   physicalActivity: "moderate",
   gender: "male",
   cuisine: "indian",
-  bmi: "",
   problemDescription: "",
   symptoms: [],
 };
 
-function Form() {
+function Form({ setLoading, setReportData, setReportGenerated }) {
   const [enteredSymptom, setEnteredSymptom] = useState("");
   const [userDetails, setUserDetails] = useState(defaultUserDetails);
 
@@ -56,34 +55,31 @@ function Form() {
     //add validatoin
     const heightSquare = (userDetails.height / 100) ^ 2;
     const calculatedBmi = userDetails.weight / heightSquare;
-    setUserDetails({ ...userDetails, bmi: calculatedBmi });
+    const newUserDetails = { ...userDetails, bmi: calculatedBmi };
+    console.log(calculatedBmi);
+    setUserDetails(newUserDetails);
     console.log(userDetails);
 
-    // setLoading(true);
+    setLoading(true);
     try {
-      response = await predict(userDetails);
+      response = await predict(newUserDetails);
     } catch (error) {
       console.error("error in app.jsx from predict api");
     }
-    // setLoading(false);
+    setLoading(false);
+    setReportData(response.data);
+    setReportGenerated(true);
     console.log(response);
   };
 
   return (
-    <form
-      className="bg-card rounded-xl pt-4 pb-4 w-[50%] mx-4 mt-8"
-      onSubmit={onFormSubmit}
-    >
-      <h1 className="text-3xl text-green-100 mb-5 mx-6 pb-5 border-amber-800">
-        Enter your details
-      </h1>
-
-      <div className="flex flex-col gap-8 px-6 max-h-[540px] overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-primary scrollbar-track-card">
+    <form className="max-w-[900px] mt-10 mx-auto glass" onSubmit={onFormSubmit}>
+      <div className="flex flex-col gap-8 px-6">
         <div className="flex justify-between gap-10">
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-red-100 text-sm ml-[1px]">Age</span>
+            <span className="input-label">Age</span>
             <Input
-              className="cursor-pointer text-red-100 focus-visible:ring-primary border-primary"
+              className="input-box"
               type="number"
               placeholder="Age"
               min="5"
@@ -96,11 +92,11 @@ function Form() {
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-red-100 text-sm ml-[1px]">Height</span>
+            <span className="input-label">Height (cm)</span>
             <Input
-              className="cursor-pointer text-red-100 focus-visible:ring-primary border-primary"
+              className="input-box"
               type="number"
-              placeholder="Height (cm)"
+              placeholder="Height"
               min="50"
               max="300"
               value={userDetails.height}
@@ -112,12 +108,13 @@ function Form() {
               }
             ></Input>
           </div>
+
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-red-100 text-sm ml-[1px]">Weight</span>
+            <span className="input-label">Weight (kg)</span>
             <Input
-              className="cursor-pointer text-red-100 focus-visible:ring-primary border-primary"
+              className="input-box"
               type="number"
-              placeholder="Weight (kg)"
+              placeholder="Weight"
               min="10"
               max="150"
               value={userDetails.weight}
@@ -133,11 +130,9 @@ function Form() {
 
         <div className="flex justify-between gap-10">
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-red-100 text-sm ml-[1px]">
-              Daily Caloric Intake
-            </span>
+            <span className="input-label">Daily Caloric Intake</span>
             <Input
-              className="cursor-pointer text-red-100 focus-visible:ring-primary border-primary"
+              className="input-box"
               type="number"
               placeholder="Caloric Intake (kcal)"
               min="300"
@@ -152,11 +147,9 @@ function Form() {
             ></Input>
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-red-100 text-sm ml-[1px]">
-              Blood Pressure (mmHg)
-            </span>
+            <span className="input-label">Blood Pressure (mmHg)</span>
             <Input
-              className="cursor-pointer text-red-100 focus-visible:ring-primary border-primary"
+              className="input-box"
               type="number"
               min="20"
               max="300"
@@ -171,11 +164,9 @@ function Form() {
             ></Input>
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-red-100 text-sm ml-[1px]">
-              Cholesterol (mg/dL)
-            </span>
+            <span className="input-label">Cholesterol (mg/dL)</span>
             <Input
-              className="cursor-pointer text-red-100 focus-visible:ring-primary border-primary"
+              className="input-box"
               type="number"
               placeholder="Cholesterol (mg/dL)"
               min="20"
@@ -193,9 +184,7 @@ function Form() {
 
         <div className="flex justify-between gap-10">
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-red-100 text-sm ml-[1px]">
-              Physical Activity
-            </span>
+            <span className="input-label">Physical Activity</span>
             <Select
               className="cursor-pointer"
               value={userDetails.physicalActivity}
@@ -206,7 +195,7 @@ function Form() {
                 })
               }
             >
-              <SelectTrigger className="w-full text-red-100 rounded-lg border-primary">
+              <SelectTrigger className="input-box w-full">
                 <SelectValue placeholder="Gender" />
               </SelectTrigger>
               <SelectContent>
@@ -218,7 +207,7 @@ function Form() {
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-red-100 text-sm ml-[1px]">Gender</span>
+            <span className="input-label">Gender</span>
             <Select
               className="cursor-pointer"
               value={userDetails.gender}
@@ -226,7 +215,7 @@ function Form() {
                 setUserDetails({ ...userDetails, gender: e.target.value })
               }
             >
-              <SelectTrigger className="w-full text-red-100 rounded-lg border-primary">
+              <SelectTrigger className="w-full input-box">
                 <SelectValue placeholder="Gender" />
               </SelectTrigger>
               <SelectContent>
@@ -238,7 +227,7 @@ function Form() {
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <span className="text-red-100 text-sm ml-[1px]">Cuisine</span>
+            <span className="input-label">Cuisine</span>
             <Select
               className="cursor-pointer"
               value={userDetails.cuisine}
@@ -246,7 +235,7 @@ function Form() {
                 setUserDetails({ ...userDetails, cuisine: e.target.value })
               }
             >
-              <SelectTrigger className="w-full text-red-100 rounded-lg border-primary">
+              <SelectTrigger className="w-full input-box">
                 <SelectValue placeholder="Cuisine" />
               </SelectTrigger>
               <SelectContent>
@@ -260,9 +249,7 @@ function Form() {
         </div>
 
         <div className="flex flex-col gap-2">
-          <span className="text-red-100 text-sm ml-[1px]">
-            Describe your problem
-          </span>
+          <span className="input-label">Describe your problem</span>
           <div className="flex items-center gap-5">
             <Textarea
               placeholder="Start writing or speaking..."
@@ -273,7 +260,7 @@ function Form() {
                   problemDescription: e.target.value,
                 })
               }
-              className="border-primary h-24 focus-visible:ring-primary text-red-100 text-base"
+              className="input-box h-20"
             ></Textarea>
             <FaMicrophone className="fill-primary size-6 cursor-pointer"></FaMicrophone>
           </div>
@@ -294,7 +281,7 @@ function Form() {
         <div className="flex gap-6">
           <Dialog>
             <DialogTrigger asChild>
-              <button className="cursor-pointer bg-gray-300 h-10 w-fit px-5 rounded-lg hover:opacity-90 hover:scale-[1.05] transition-all duration-150">
+              <button className="cursor-pointer bg-blue-200 h-10 w-fit px-5 rounded-lg hover:opacity-90 hover:scale-[1.05] transition-all duration-150">
                 Add Symptoms +
               </button>
             </DialogTrigger>
@@ -325,7 +312,7 @@ function Form() {
               </div>
             </DialogContent>
           </Dialog>
-          <button className="bg-primary mb-3 cursor-pointer h-10 w-fit px-5 rounded-lg hover:opacity-90 hover:scale-[1.05] transition-all duration-150">
+          <button className="bg-primary mb-3 text-white cursor-pointer h-10 w-fit px-5 rounded-lg hover:opacity-90 hover:scale-[1.05] transition-all duration-150">
             Generate Report
           </button>
         </div>
@@ -345,12 +332,12 @@ function SymptomTag({ symptom, userDetails, setUserDetails }) {
   };
 
   return (
-    <div className="items-center flex text-red-200 px-4 border-2 rounded-xl py-1 border-primary gap-5 w-fit">
+    <div className="items-center flex text-blue-800 font-semibold px-4 border-2 rounded-xl py-1 border-primary gap-5 w-fit">
       <span className="">{symptom}</span>
       <button
         type="button"
         onClick={onCrossClick}
-        className="cursor-pointer text-xl text-primary font-semibold"
+        className="cursor-pointer text-xl text-red-400 font-semibold"
       >
         x
       </button>

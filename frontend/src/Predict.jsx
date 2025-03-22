@@ -1,20 +1,15 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router";
-import "./index.css";
-import App from "./App";
-import About from "./About";
-import Home from "./Home";
-import Report from "./components/report/Report.jsx";
-import Predict from "./Predict.jsx";
+import { useState } from "react";
+import Form from "./components/form/Form";
+import Header from "./components/header/Header";
+import Report from "./components/report/Report";
 
 const example_data = {
   age: "26",
-  height: "180 cm",
-  weight: "85 kg",
-  caloric_intake: "2000 kcal",
-  blood_pressure: "135 mmHg",
-  cholesterol: "210 mg/dL",
+  height: "180",
+  weight: "85",
+  caloric_intake: "2000",
+  blood_pressure: "135",
+  cholesterol: "210",
   gender: "male",
   disease_name: "Hypertension",
   description:
@@ -61,27 +56,55 @@ const example_data = {
   ],
 };
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-  },
-  {
-    path: "about",
-    element: <About />,
-  },
-  {
-    path: "home",
-    element: <Home />,
-  },
-  {
-    path: "predict",
-    element: <Predict></Predict>,
-  },
-]);
+function Predict() {
+  const [loading, setLoading] = useState(false);
+  const [reportGenerated, setReportGenerated] = useState(false);
+  const [reportData, setReportData] = useState();
 
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <RouterProvider router={router} />
-  </StrictMode>
-);
+  return (
+    <div className="min-h-screen max-h-screen overflow-y-scroll overflow-x-hidden bg-radial from-white to-blue-100">
+      <Header></Header>
+
+      <div className="max-w-[800px] mx-auto text-center glass">
+        <h1 className="text-4xl font-bold">🩺 Predict Your Health Condition</h1>
+        <p className="text-lg mt-3">
+          Enter your details below to receive an AI-generated health analysis
+          and suggested prescription. However, always consult a professional
+          doctor for a confirmed diagnosis.
+        </p>
+      </div>
+
+      {!loading && !reportGenerated && (
+        <Form
+          setLoading={setLoading}
+          setReportData={setReportData}
+          setReportGenerated={setReportGenerated}
+        ></Form>
+      )}
+
+      {loading && <WarningAndLoading></WarningAndLoading>}
+
+      {reportGenerated && <Report data={reportData}></Report>}
+    </div>
+  );
+}
+
+export default Predict;
+
+function WarningAndLoading() {
+  return (
+    <div className="text-center mt-24 text-lg">
+      <p>
+        ⚠ This prediction is based on our small dataset and should not be taken
+        as medical advice.
+      </p>
+      <p>Always seek professional medical attention for any health concerns.</p>
+      <div className="lds-ellipsis">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  );
+}

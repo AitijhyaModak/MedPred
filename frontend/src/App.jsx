@@ -57,10 +57,8 @@ const example_data = {
 
 function App() {
   return (
-    <div className="min-h-screen pt-2 bg-[#FAF1E6]">
+    <div className="min-h-screen max-h-screen overflow-y-scroll overflow-x-hidden pt-2 bg-radial from-white to-blue-100">
       <Header></Header>
-      <Form></Form>
-      <Report data={example_data}></Report>
     </div>
   );
 }

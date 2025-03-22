@@ -16,7 +16,7 @@ def disease_prediction():
     data = request.json
     user_symptoms = data.get("symptoms",[])
     user_text = data.get("problemDescription", "")
-    bmi = data.get("bmi",25)
+    bmi = float(data.get("bmi",25))
     print(bmi)
     
     print(data)
@@ -26,6 +26,8 @@ def disease_prediction():
     returnArray = predict.make_prediction(user_text, user_symptoms)
     disease_index = returnArray[0]
     diet_index = returnArray[1]
+    print(disease_index)
+    print(diet_index)
 
     with open("./model/disease_dictionary.pkl", "rb") as f:
         disease_dictionary = pickle.load(f)
@@ -37,6 +39,10 @@ def disease_prediction():
         diet_data = pickle.load(f)
 
     disease_data = disease_dictionary[disease_index]
+    print(disease_dictionary[0])
+    print(disease_dictionary[1])
+    print(disease_data)
+    print(disease_data)
     
     if (bmi < 18.5): workout = workout_data[0]
     elif (bmi < 25): workout = workout_data[1]
@@ -48,6 +54,7 @@ def disease_prediction():
         "caloric_intake": data.get("dailyCaloricIntake"),
         "blood_pressure": data.get("bloodPressure"),
         "cholesterol": data.get("cholesterol"),
+        "weight": data.get("weight"),
         "gender": data.get("gender"),
         "disease_name": disease_data["disease_name"],
         "description": disease_data["description"],
