@@ -48,6 +48,14 @@
   @apply text-gray-800 text-sm ml-[1px];
 }
 
+.input-error {
+  @apply focus-visible:!ring-red-400 !border-red-400 border-2;
+}
+
+.input-label-error {
+  @apply text-red-400 font-semibold;
+}
+
 .lds-ellipsis {
   /* change color here */
   color: #1c4c5b

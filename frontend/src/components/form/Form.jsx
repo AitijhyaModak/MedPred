@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { predict } from "../../api/prediction";
 import {
   Select,
@@ -17,6 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { FaMicrophone } from "react-icons/fa";
+import { toast } from "sonner";
 
 const defaultUserDetails = {
   age: "",
@@ -32,9 +33,17 @@ const defaultUserDetails = {
   symptoms: [],
 };
 
+const initialError = {
+  age: true,
+  weight: true,
+  height: true,
+  symptoms: true,
+};
+
 function Form({ setLoading, setReportData, setReportGenerated }) {
   const [enteredSymptom, setEnteredSymptom] = useState("");
   const [userDetails, setUserDetails] = useState(defaultUserDetails);
+  const [error, setError] = useState(initialError);
 
   const onAddClick = (e) => {
     if (enteredSymptom.trim() !== "")
@@ -48,11 +57,34 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
     setEnteredSymptom("");
   };
 
+  const checkFormEmpty = (userDetails) => {
+    let weight = true;
+    let age = true;
+    let height = true;
+    let symptoms = true;
+
+    if (!userDetails.weight) weight = false;
+    if (!userDetails.age) age = false;
+    if (!userDetails.height) height = false;
+    if (!userDetails.problemDescription.trim() && !userDetails.symptoms.length)
+      symptoms = false;
+
+    setError({ weight, age, height, symptoms });
+    return weight && age && height && symptoms;
+  };
+
   const onFormSubmit = async (e) => {
     e.preventDefault();
     let response;
 
-    //add validatoin
+    if (!checkFormEmpty(userDetails)) {
+      toast("", {
+        className: "!shadow-2xl !bg-red-50 !border-2 !border-red-500",
+        description: <FormError></FormError>,
+      });
+      return;
+    }
+
     const heightSquare = (userDetails.height / 100) ^ 2;
     const calculatedBmi = userDetails.weight / heightSquare;
     const newUserDetails = { ...userDetails, bmi: calculatedBmi };
@@ -77,13 +109,15 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
       <div className="flex flex-col gap-8 px-6">
         <div className="flex justify-between gap-10">
           <div className="flex flex-col gap-2 w-full">
-            <span className="input-label">Age</span>
+            <span
+              className={`input-label ${!error.age ? "input-label-error" : ""}`}
+            >
+              Age
+            </span>
             <Input
-              className="input-box"
+              className={`input-box ${!error.age ? "input-error" : ""}`}
               type="number"
               placeholder="Age"
-              min="5"
-              max="100"
               value={userDetails.age}
               onChange={(e) =>
                 setUserDetails({ ...userDetails, age: Number(e.target.value) })
@@ -92,13 +126,17 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <span className="input-label">Height (cm)</span>
+            <span
+              className={`input-label ${
+                !error.height ? "input-label-error" : ""
+              }`}
+            >
+              Height (cm)
+            </span>
             <Input
-              className="input-box"
+              className={`input-box ${!error.height ? "input-error" : ""}`}
               type="number"
               placeholder="Height"
-              min="50"
-              max="300"
               value={userDetails.height}
               onChange={(e) =>
                 setUserDetails({
@@ -110,13 +148,17 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
           </div>
 
           <div className="flex flex-col gap-2 w-full">
-            <span className="input-label">Weight (kg)</span>
+            <span
+              className={`input-label ${
+                !error.weight ? "input-label-error" : ""
+              }`}
+            >
+              Weight (kg)
+            </span>
             <Input
-              className="input-box"
+              className={`input-box ${!error.weight ? "input-error" : ""}`}
               type="number"
               placeholder="Weight"
-              min="10"
-              max="150"
               value={userDetails.weight}
               onChange={(e) =>
                 setUserDetails({
@@ -135,8 +177,6 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
               className="input-box"
               type="number"
               placeholder="Caloric Intake (kcal)"
-              min="300"
-              max="11000"
               value={userDetails.dailyCaloricIntake}
               onChange={(e) =>
                 setUserDetails({
@@ -151,8 +191,6 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
             <Input
               className="input-box"
               type="number"
-              min="20"
-              max="300"
               placeholder="Blood Pressure (mmHg)"
               value={userDetails.bloodPressure}
               onChange={(e) =>
@@ -169,8 +207,6 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
               className="input-box"
               type="number"
               placeholder="Cholesterol (mg/dL)"
-              min="20"
-              max="500"
               value={userDetails.cholesterol}
               onChange={(e) =>
                 setUserDetails({
@@ -221,7 +257,6 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
               <SelectContent>
                 <SelectItem value="male">Male</SelectItem>
                 <SelectItem value="female">Female</SelectItem>
-                <SelectItem value="other">Other</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -249,7 +284,13 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          <span className="input-label">Describe your problem</span>
+          <span
+            className={`input-label ${
+              !error.symptoms ? "input-label-error" : ""
+            }`}
+          >
+            Describe your problem
+          </span>
           <div className="flex items-center gap-5">
             <Textarea
               placeholder="Start writing or speaking..."
@@ -260,7 +301,9 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
                   problemDescription: e.target.value,
                 })
               }
-              className="input-box h-20"
+              className={`input-box h-20 ${
+                !error.symptoms ? "input-error" : ""
+              }`}
             ></Textarea>
             <FaMicrophone className="fill-primary size-6 cursor-pointer"></FaMicrophone>
           </div>
@@ -268,8 +311,9 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
 
         {userDetails.symptoms.length !== 0 && (
           <div className="flex gap-5 flex-wrap">
-            {userDetails.symptoms.map((symptom) => (
+            {userDetails.symptoms.map((symptom, index) => (
               <SymptomTag
+                key={index}
                 symptom={symptom}
                 userDetails={userDetails}
                 setUserDetails={setUserDetails}
@@ -341,6 +385,14 @@ function SymptomTag({ symptom, userDetails, setUserDetails }) {
       >
         x
       </button>
+    </div>
+  );
+}
+
+function FormError() {
+  return (
+    <div className="text-red-500 text-base">
+      <p>Please fill up all the fields to proceed.</p>
     </div>
   );
 }
