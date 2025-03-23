@@ -27,7 +27,7 @@ def match_synonyms(user_text, model, indices, symptom_embeddings, threshold=0.7)
 def translate_text(text, target_lang="en"):
     return mtranslate.translate(text, target_lang)
 
-def make_prediction(user_text, user_symptoms):
+def make_prediction(user_text, user_symptoms, user_data):
 
     user_text = translate_text(user_text, "en")
 
