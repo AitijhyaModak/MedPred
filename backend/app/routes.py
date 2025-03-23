@@ -23,7 +23,9 @@ def disease_prediction():
     print("\Final Description: ")
     print(user_text)
 
-    returnArray = predict.make_prediction(user_text, user_symptoms)
+    user_data = [data.get("age"), data.get("height"), data.get("weight"), data.get("cholesterol"), data.get("dailyCaloricIntake"), data.get("bloodPressure")]
+
+    returnArray = predict.make_prediction(user_text, user_symptoms, user_data)
     disease_index = returnArray[0]
     diet_index = returnArray[1]
     print(disease_index)
@@ -39,10 +41,6 @@ def disease_prediction():
         diet_data = pickle.load(f)
 
     disease_data = disease_dictionary[disease_index]
-    print(disease_dictionary[0])
-    print(disease_dictionary[1])
-    print(disease_data)
-    print(disease_data)
     
     if (bmi < 18.5): workout = workout_data[0]
     elif (bmi < 25): workout = workout_data[1]
