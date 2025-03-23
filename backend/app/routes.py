@@ -14,16 +14,43 @@ def home():
 @main_blueprint.route("/predict", methods=["POST"])
 def disease_prediction():
     data = request.json
+
     user_symptoms = data.get("symptoms",[])
     user_text = data.get("problemDescription", "")
     bmi = float(data.get("bmi",25))
-    print(bmi)
+    age = data.get("age")
+    height = data.get("height")
+    weight = data.get("weight")
+    caloricIntake = data.get("dailyCaloricIntake")
+    cholesterol = data.get("cholesterol")
+    bloodPressure = data.get("bloodPressure")
+    physicalActivity = data.get("sedentary")
+    gender = data.get("gender")
+    cuisine = data.get("cuisine")
+
+    if (physicalActivity=="sedentary"): physicalActivityN = 0
+    elif (physicalActivity=="moderate"): physicalActivityN = 1
+    else: physicalActivityN = 2
+
+    if (gender=="male"): genderN = 0
+    else : genderN = 1
+
+    if (cuisine=="mexican"): cuisineN = 0
+    elif (cuisine=="chinese"): cuisineN = 1
+    elif (cuisine=="italian"): cuisineN = 2
+    else: cuisineN = 3
+
+    print("Bmi is %d" % bmi)
+    print("Cuisine is %d" % cuisineN)
+    print("Physical Activity is %d" % physicalActivityN)
+    print("Gender is %d" % genderN)
     
     print(data)
+
     print("\Final Description: ")
     print(user_text)
 
-    user_data = [data.get("age"), data.get("height"), data.get("weight"), data.get("cholesterol"), data.get("dailyCaloricIntake"), data.get("bloodPressure")]
+    user_data = [age, genderN, weight, height, bmi, physicalActivityN, caloricIntake, cholesterol, bloodPressure, cuisineN]
 
     returnArray = predict.make_prediction(user_text, user_symptoms, user_data)
     disease_index = returnArray[0]
@@ -47,13 +74,13 @@ def disease_prediction():
     else: workout = workout_data[2]
 
     return jsonify({
-        "age":data.get("age"),
-        "height":data.get("height"),
-        "caloric_intake": data.get("dailyCaloricIntake"),
-        "blood_pressure": data.get("bloodPressure"),
-        "cholesterol": data.get("cholesterol"),
-        "weight": data.get("weight"),
-        "gender": data.get("gender"),
+        "age": age,
+        "height": height, 
+        "caloric_intake": caloricIntake,
+        "blood_pressure": bloodPressure,
+        "cholesterol": cholesterol,
+        "weight": weight,
+        "gender": gender,
         "disease_name": disease_data["disease_name"],
         "description": disease_data["description"],
         "medication": disease_data["medication"],
@@ -62,6 +89,6 @@ def disease_prediction():
         "bmi": bmi,
         "workout": workout,
         "recommended": diet_data[diet_index][data.get("cuisine")]["recommended"],
-        "cuisine": data.get("cuisine"),
+        "cuisine": cuisine,
         "diets": diet_data[diet_index][data.get("cuisine")]["diet"]
     })

@@ -51,13 +51,12 @@ def make_prediction(user_text, user_symptoms, user_data):
     a = sclf.predict(vec)
     a = a[0]
 
-    vec2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    vec2 = np.array(vec2).reshape(1, -1)
+    user_data = np.array(user_data).reshape(1, -1)
 
     with open("./model/diet_model.pkl", "rb") as f:
         sclf2 = pickle.load(f)
         
-    b = sclf2.predict(vec2)
+    b = sclf2.predict(user_data)
     b = b[0]
     
     return [a, b]

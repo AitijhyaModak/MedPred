@@ -57,7 +57,7 @@ const Report = ({ data }) => {
               <strong>Weight:</strong> {data.weight} kg
             </p>
             <p>
-              <strong>BMI:</strong> {data.bmi}
+              <strong>BMI:</strong> {data.bmi.toFixed(2)}
             </p>
             <p>
               <strong>Blood Pressure:</strong> {data.blood_pressure} mmHg
@@ -78,23 +78,23 @@ const Report = ({ data }) => {
           <p className="text-gray-700">{data.description}</p>
         </div>
 
-        <div className="bg-yellow-50 p-4 rounded-lg mb-4 border border-yellow-300">
-          <h2 className="text-2xl font-semibold text-yellow-700">
-            Things to Avoid
-          </h2>
-          <ul className="list-disc list-inside text-red-500">
-            {data.precautions.map((item, index) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
-
         <div className="bg-green-50 p-4 rounded-lg mb-4 border border-green-300">
           <h2 className="text-2xl font-semibold text-green-700">
             Things to Do Now
           </h2>
           <ul className="list-disc list-inside text-green-600">
             {data.things_to_do_now.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="bg-yellow-50 p-4 rounded-lg mb-4 border border-yellow-300">
+          <h2 className="text-2xl font-semibold text-yellow-700">
+            Precautions to avoid the disease in future
+          </h2>
+          <ul className="list-disc list-inside text-red-500">
+            {data.precautions.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
           </ul>
@@ -138,7 +138,7 @@ const Report = ({ data }) => {
           onClick={downloadImage}
           className="px-6 mb-3 py-3 cursor-pointer text-white font-semibold rounded-lg shadow bg-blue-600 hover:bg-blue-700 transition duration-200"
         >
-          Save as Image
+          Download
         </button>
       </div>
     </div>

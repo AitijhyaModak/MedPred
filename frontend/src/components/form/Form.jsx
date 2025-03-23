@@ -40,7 +40,12 @@ const initialError = {
   symptoms: true,
 };
 
-function Form({ setLoading, setReportData, setReportGenerated }) {
+function Form({
+  setLoading,
+  setReportData,
+  setReportGenerated,
+  setPredictError,
+}) {
   const [enteredSymptom, setEnteredSymptom] = useState("");
   const [userDetails, setUserDetails] = useState(defaultUserDetails);
   const [error, setError] = useState(initialError);
@@ -93,12 +98,21 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
     console.log(userDetails);
 
     setLoading(true);
+
     try {
       response = await predict(newUserDetails);
     } catch (error) {
       console.error("error in app.jsx from predict api");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
+
+    if (!response) {
+      setPredictError(true);
+      console.log("Dfas");
+      return;
+    }
+
     setReportData(response.data);
     setReportGenerated(true);
     console.log(response);
@@ -224,17 +238,14 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
             <Select
               className="cursor-pointer"
               value={userDetails.physicalActivity}
-              onChange={(e) =>
-                setUserDetails({
-                  ...userDetails,
-                  physicalActivity: e.target.value,
-                })
+              onValueChange={(newValue) =>
+                setUserDetails({ ...userDetails, physicalActivity: newValue })
               }
             >
               <SelectTrigger className="input-box w-full">
                 <SelectValue placeholder="Gender" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-blue-100 text-black cursor-pointer">
                 <SelectItem value="sedentary">Sedentary</SelectItem>
                 <SelectItem value="moderate">Moderate</SelectItem>
                 <SelectItem value="active">Active</SelectItem>
@@ -247,8 +258,8 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
             <Select
               className="cursor-pointer"
               value={userDetails.gender}
-              onChange={(e) =>
-                setUserDetails({ ...userDetails, gender: e.target.value })
+              onValueChange={(newValue) =>
+                setUserDetails({ ...userDetails, gender: newValue })
               }
             >
               <SelectTrigger className="w-full input-box">
@@ -266,8 +277,8 @@ function Form({ setLoading, setReportData, setReportGenerated }) {
             <Select
               className="cursor-pointer"
               value={userDetails.cuisine}
-              onChange={(e) =>
-                setUserDetails({ ...userDetails, cuisine: e.target.value })
+              onValueChange={(newValue) =>
+                setUserDetails({ ...userDetails, cuisine: newValue })
               }
             >
               <SelectTrigger className="w-full input-box">
