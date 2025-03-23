@@ -5,7 +5,7 @@ import Report from "./components/report/Report";
 import { Toaster } from "./components/ui/sonner";
 
 function Predict() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [reportGenerated, setReportGenerated] = useState(false);
   const [reportData, setReportData] = useState();
 
@@ -48,11 +48,11 @@ function WarningAndLoading() {
         as medical advice.
       </p>
       <p>Always seek professional medical attention for any health concerns.</p>
-      <div className="lds-ellipsis">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
+      <div className="lds-ellipsis text-[#1c4c5b] inline-block relative w-[80px] h-[80px]">
+        <div className="absolute top-[33.33px] w-[13.33px] h-[13.33px] rounded-[50%] bg-current"></div>
+        <div className="absolute top-[33.33px] w-[13.33px] h-[13.33px] rounded-[50%] bg-current"></div>
+        <div className="absolute top-[33.33px] w-[13.33px] h-[13.33px] rounded-[50%] bg-current"></div>
+        <div className="absolute top-[33.33px] w-[13.33px] h-[13.33px] rounded-[50%] bg-current"></div>
       </div>
     </div>
   );
