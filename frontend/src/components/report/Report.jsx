@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import html2canvas from "html2canvas-pro";
 import { jsPDF } from "jspdf";
 
@@ -35,6 +35,17 @@ const Report = ({ data }) => {
       });
     }, 500);
   };
+
+  const [bmiCondition, setBmiCondition] = useState("normal");
+
+  useEffect(() => {
+    if (!data) return;
+
+    if (data.bmi < 18.5) setBmiCondition("underweight");
+    else if (data.bmi < 25) setBmiCondition("normal");
+    else if (data.bmi < 30) setBmiCondition("overweight");
+    else setBmiCondition("obese");
+  }, [data]);
 
   return (
     <div className="px-5 rounded-xl bg-white/15 shadow-2xl backdrop-blur-2xl shadow-gray-400 max-w-[850px] mx-auto mt-13 mb-20 border-red-400">
@@ -106,18 +117,21 @@ const Report = ({ data }) => {
           <h2 className="text-2xl font-semibold text-purple-700">
             Workout Plan
           </h2>
-          <ul className="list-disc list-inside text-purple-600">
+          <p className="text-purple-600">
+            Your BMI is {data.bmi.toFixed(2)}. You fall in{" "}
+            <strong>{bmiCondition}</strong> range. Below is a recommended
+            workout plan for you.
+          </p>
+          <ul className="list-disc list-inside text-purple-600 mt-1">
             {data.workout.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
           </ul>
         </div>
 
-        <div className="bg-purple-50 p-4 rounded-lg mb-4 border border-green-300">
-          <h2 className="text-2xl font-semibold text-purple-700">
-            Medications
-          </h2>
-          <ul className="list-disc list-inside text-purple-600">
+        <div className="bg-rose-50 p-4 rounded-lg mb-4 border border-rose-300">
+          <h2 className="text-2xl font-semibold text-rose-700">Medications</h2>
+          <ul className="list-disc list-inside text-rose-600">
             {data.medication.map((item, index) => (
               <li key={index}>{item}</li>
             ))}
@@ -129,7 +143,10 @@ const Report = ({ data }) => {
             Recommended Diet
           </h2>
           <p className="text-gray-700 font-medium capitalize">
-            Cuisine: {data.cuisine}
+            Cuisine: <span className="text-blue-500">{data.cuisine}</span>
+          </p>
+          <p className="text-gray-800">
+            You are recommended a {data.recommended}.
           </p>
           <div className="mt-2">
             <h3 className="font-semibold text-lg">Breakfast</h3>
