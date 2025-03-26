@@ -111,6 +111,17 @@ const Report = ({ data }) => {
           </ul>
         </div>
 
+        <div className="bg-purple-50 p-4 rounded-lg mb-4 border border-green-300">
+          <h2 className="text-2xl font-semibold text-purple-700">
+            Medications
+          </h2>
+          <ul className="list-disc list-inside text-purple-600">
+            {data.medication.map((item, index) => (
+              <li key={index}>{item}</li>
+            ))}
+          </ul>
+        </div>
+
         <div className="bg-indigo-50 p-4 rounded-lg mb-4 border border-indigo-300">
           <h2 className="text-2xl font-semibold text-indigo-700">
             Recommended Diet
