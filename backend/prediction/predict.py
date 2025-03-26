@@ -5,15 +5,21 @@ import numpy as np
 import pickle
 import warnings
 warnings.simplefilter('ignore')
+import re
 
 with open("./model/symptoms.pkl", "rb") as f:
     symptom_columns = pickle.load(f)
 
+def preprocess_text(user_text):
+    return re.split(r',\s*|\s+', user_text.strip())
+
 def match_synonyms(user_text, model, indices, symptom_embeddings, threshold=0.7):
     user_embedding = model.encode(user_text)
+    extracted_symptoms = preprocess_text(user_text)
+    print(extracted_symptoms)
 
     matched_symptoms = []
-    for j in user_text.split(','):
+    for j in extracted_symptoms:
         user_embedding = model.encode(j)
         for i, symptom in enumerate(symptom_columns):
             similarity = util.cos_sim(user_embedding, symptom_embeddings[i]).item()
@@ -40,7 +46,9 @@ def make_prediction(user_text, user_symptoms, user_data):
     indices = []
     vec = [0 for i in range(0, len(symptom_columns))]
 
+    print("matched symptoms")
     print(match_synonyms(user_text, model, indices, symptom_embeddings))
+    
     for symptom in user_symptoms:
         print(match_synonyms(symptom, model, indices, symptom_embeddings))
 

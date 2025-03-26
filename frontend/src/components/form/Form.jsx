@@ -50,6 +50,7 @@ function Form({
   const [enteredSymptom, setEnteredSymptom] = useState("");
   const [userDetails, setUserDetails] = useState(defaultUserDetails);
   const [error, setError] = useState(initialError);
+  const [disabled, setDisabled] = useState(false);
 
   const onAddClick = (e) => {
     if (enteredSymptom.trim() !== "")
@@ -301,10 +302,11 @@ function Form({
               !error.symptoms ? "input-label-error" : ""
             }`}
           >
-            Describe your problem
+            Describe your problem (Write only symptoms for best results)
           </span>
 
           <VoiceRecogTextArea
+            setDisabled={setDisabled}
             userDetails={userDetails}
             setUserDetails={setUserDetails}
             error={error}
@@ -327,7 +329,10 @@ function Form({
         <div className="flex gap-6">
           <Dialog>
             <DialogTrigger asChild>
-              <button className="cursor-pointer bg-blue-200 h-10 w-fit px-5 rounded-lg hover:opacity-90 hover:scale-[1.05] transition-all duration-150">
+              <button
+                disabled={disabled}
+                className="disabled:cursor-not-allowed cursor-pointer bg-blue-200 h-10 w-fit px-5 rounded-lg hover:opacity-90 hover:scale-[1.05] transition-all duration-150"
+              >
                 Add Symptoms +
               </button>
             </DialogTrigger>
@@ -358,7 +363,10 @@ function Form({
               </div>
             </DialogContent>
           </Dialog>
-          <button className="bg-primary mb-3 text-white cursor-pointer h-10 w-fit px-5 rounded-lg hover:opacity-90 hover:scale-[1.05] transition-all duration-150">
+          <button
+            disabled={disabled}
+            className="disabled:cursor-not-allowed bg-primary mb-3 text-white cursor-pointer h-10 w-fit px-5 rounded-lg hover:opacity-90 hover:scale-[1.05] transition-all duration-150"
+          >
             Generate Report
           </button>
         </div>

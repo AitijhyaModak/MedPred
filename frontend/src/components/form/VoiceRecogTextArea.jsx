@@ -5,24 +5,29 @@ import SpeechRecognition, {
 import { Textarea } from "../ui/textarea";
 import { FaMicrophone } from "react-icons/fa";
 
-function VoiceRecogTextArea({ userDetails, setUserDetails, error }) {
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecogntion,
-  } = useSpeechRecognition();
+function VoiceRecogTextArea({
+  userDetails,
+  setUserDetails,
+  error,
+  setDisabled,
+}) {
+  const { transcript, listening, resetTranscript } = useSpeechRecognition();
 
   const onMicClick = () => {
-    if (listening) SpeechRecognition.stopListening();
-    else {
+    if (listening) {
+      setDisabled(false);
+      SpeechRecognition.stopListening();
+    } else {
+      setDisabled(true);
       SpeechRecognition.startListening({ continuous: true });
-      resetTranscript();
     }
+    resetTranscript();
   };
 
   useEffect(() => {
-    setUserDetails({ ...userDetails, problemDescription: transcript });
+    if (listening) {
+      setUserDetails({ ...userDetails, problemDescription: transcript });
+    }
   }, [transcript]);
 
   return (
@@ -39,8 +44,8 @@ function VoiceRecogTextArea({ userDetails, setUserDetails, error }) {
         className={`input-box h-20 ${!error.symptoms ? "input-error" : ""}`}
       ></Textarea>
       <FaMicrophone
-        className={`fill-primary size-6 cursor-pointer ${
-          listening ? "animate-ping" : ""
+        className={`size-6 cursor-pointer ${
+          listening ? "fill-green-500 animate-pulse" : "fill-primary"
         }`}
         onClick={onMicClick}
       ></FaMicrophone>
