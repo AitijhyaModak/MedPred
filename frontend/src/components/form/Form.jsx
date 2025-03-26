@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dialog";
 import { FaMicrophone } from "react-icons/fa";
 import { toast } from "sonner";
+import VoiceRecogTextArea from "./VoiceRecogTextArea";
 
 const defaultUserDetails = {
   age: "",
@@ -302,22 +303,12 @@ function Form({
           >
             Describe your problem
           </span>
-          <div className="flex items-center gap-5">
-            <Textarea
-              placeholder="Start writing or speaking..."
-              value={userDetails.problemDescription}
-              onChange={(e) =>
-                setUserDetails({
-                  ...userDetails,
-                  problemDescription: e.target.value,
-                })
-              }
-              className={`input-box h-20 ${
-                !error.symptoms ? "input-error" : ""
-              }`}
-            ></Textarea>
-            <FaMicrophone className="fill-primary size-6 cursor-pointer"></FaMicrophone>
-          </div>
+
+          <VoiceRecogTextArea
+            userDetails={userDetails}
+            setUserDetails={setUserDetails}
+            error={error}
+          ></VoiceRecogTextArea>
         </div>
 
         {userDetails.symptoms.length !== 0 && (
