@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "./components/form/Form";
 import Header from "./components/header/Header";
 import Report from "./components/report/Report";

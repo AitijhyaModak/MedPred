@@ -16,9 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { FaMicrophone } from "react-icons/fa";
 import { toast } from "sonner";
-import VoiceRecogTextArea from "./VoiceRecogTextArea";
 
 const defaultUserDetails = {
   age: "",
@@ -305,12 +303,17 @@ function Form({
             Describe your problem (Write only symptoms for best results)
           </span>
 
-          <VoiceRecogTextArea
-            setDisabled={setDisabled}
-            userDetails={userDetails}
-            setUserDetails={setUserDetails}
-            error={error}
-          ></VoiceRecogTextArea>
+          <Textarea
+            placeholder="Start writing or speaking..."
+            value={userDetails.problemDescription}
+            onChange={(e) =>
+              setUserDetails({
+                ...userDetails,
+                problemDescription: e.target.value,
+              })
+            }
+            className={`input-box h-20 ${!error.symptoms ? "input-error" : ""}`}
+          ></Textarea>
         </div>
 
         {userDetails.symptoms.length !== 0 && (

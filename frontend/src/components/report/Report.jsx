@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import html2canvas from "html2canvas-pro";
 import { jsPDF } from "jspdf";
 
@@ -31,12 +31,14 @@ const Report = ({ data }) => {
         }
 
         pdf.save("MedPred_Report.pdf");
+        x;
       });
     }, 500);
   };
 
   return (
     <div className="px-5 rounded-xl bg-white/15 shadow-2xl backdrop-blur-2xl shadow-gray-400 max-w-[850px] mx-auto mt-13 mb-20 border-red-400">
+      <div id="google_translate_element"></div>
       <div id="report" className="px-3">
         <div className="text-center py-4 mb-4 border-b-2 border-gray-300">
           <h1 className="text-4xl font-bold text-blue-600">MedPred Report</h1>
