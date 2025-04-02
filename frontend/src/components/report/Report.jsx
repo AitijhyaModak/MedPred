@@ -48,7 +48,7 @@ const Report = ({ data }) => {
   }, [data]);
 
   return (
-    <div className="px-5 rounded-xl bg-white/15 shadow-2xl backdrop-blur-2xl shadow-gray-400 max-w-[850px] mx-auto mt-13 mb-20 border-red-400">
+    <div className="animate-fade-in-up delay-100 opacity-0 px-5 rounded-xl bg-white/15 shadow-2xl backdrop-blur-2xl shadow-gray-400 max-w-[850px] mx-auto mt-13 mb-20 border-red-400">
       <div id="google_translate_element"></div>
       <div id="report" className="px-3">
         <div className="text-center py-4 mb-4 border-b-2 border-gray-300">

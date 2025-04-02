@@ -14,7 +14,7 @@ function Predict() {
     <div className="pt-10 min-h-screen max-h-screen overflow-y-scroll overflow-x-hidden bg-radial from-white to-blue-100">
       <Toaster></Toaster>
 
-      <div className="max-w-[800px] mx-auto text-center glass">
+      <div className="max-w-[800px] mx-auto text-center glass animate-fade-in-up delay-100 opacity-0">
         <h1 className="text-4xl font-bold">🩺 Predict Your Health Condition</h1>
         <p className="text-lg mt-3">
           Enter your details below to receive an AI-generated health analysis

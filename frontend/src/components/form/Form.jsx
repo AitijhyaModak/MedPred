@@ -119,7 +119,10 @@ function Form({
   };
 
   return (
-    <form className="max-w-[900px] mt-10 mx-auto glass" onSubmit={onFormSubmit}>
+    <form
+      className="max-w-[900px] mt-10 mx-auto glass animate-fade-in-up delay-700 opacity-0"
+      onSubmit={onFormSubmit}
+    >
       <div className="flex flex-col gap-8 px-6">
         <div className="flex justify-between gap-10">
           <div className="flex flex-col gap-2 w-full">
