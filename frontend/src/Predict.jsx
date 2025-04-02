@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Form from "./components/form/Form";
 import Header from "./components/header/Header";
 import Report from "./components/report/Report";
@@ -11,9 +11,8 @@ function Predict() {
   const [predictError, setPredictError] = useState(false);
 
   return (
-    <div className="min-h-screen max-h-screen overflow-y-scroll overflow-x-hidden bg-radial from-white to-blue-100">
+    <div className="pt-10 min-h-screen max-h-screen overflow-y-scroll overflow-x-hidden bg-radial from-white to-blue-100">
       <Toaster></Toaster>
-      <Header></Header>
 
       <div className="max-w-[800px] mx-auto text-center glass">
         <h1 className="text-4xl font-bold">🩺 Predict Your Health Condition</h1>
